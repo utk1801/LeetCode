@@ -50,6 +50,7 @@ public class BuySellStocks {
         if (n == 0 || k == 0) return 0;
         int maxP = 0, minC = prices[0], prof = 0;
         if (k >= n / 2) {
+            //as many txns (2nd part)
             for (int i = 1; i < n; i++) {
                 if (prices[i] > prices[i - 1])
                     prof += prices[i] - prices[i - 1];
@@ -57,7 +58,7 @@ public class BuySellStocks {
             return prof;
         }
 
-        //1 txn
+        //1 txn (1st part)
         int[] profit = new int[n];
         for (int i = 0; i < n; i++) {
             minC = Math.min(minC, prices[i]);

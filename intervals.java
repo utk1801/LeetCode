@@ -22,8 +22,8 @@ public class intervals {
         int n=interval.length;
         int[] curInt=interval[0];
         List<int[]> res=new ArrayList();
-            res.add(curInt);
-            for(int i=1;i<n;i++){
+        res.add(curInt);
+        for(int i=1;i<n;i++){
             if(curInt[1]>=interval[i][0]){
                 curInt[1]=Math.max(curInt[1],interval[i][1]);
             }
