@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 
 public class intervals {
     public static void main(String[] args) {
-        int[][] interval={{1,3},{2,6},{8,10},{15,18}};
+        int[][] interval={{1,3},{3,6},{8,10},{15,18}};
         System.out.println(Arrays.deepToString(mergeInterval(interval)));
         System.out.println(meetingRoomsI(interval));
         System.out.println(meetingRoomsII(interval));
@@ -14,6 +14,8 @@ public class intervals {
         System.out.println(Arrays.deepToString(insertInterval(interval,new int[]{10,12})));
         int[][] points={{10,16},{2,8},{1,6},{7,12}};
         System.out.println(findMinArrowShots(points));
+        int[][] A={{0,2},{5,10},{13,23},{24,25}}, B = {{1,5},{8,12},{15,24},{25,26}};
+        System.out.print(Arrays.deepToString(intervalIntersection(A,B)));
     }
 
     //LC-56
@@ -137,5 +139,23 @@ public class intervals {
         }
         res.add(newInterval);
         return res.toArray(new int[res.size()][2]);
+    }
+
+    //LC-986
+    static int[][] intervalIntersection(int[][] A, int[][] B) {
+        List<int[]> ans=new ArrayList<>();
+        int n1=A.length;
+        int n2=B.length;
+        int i=0,j=0;
+        while(i<n1 && j<n2){
+            int lo=Math.max(A[i][0],B[j][0]);
+            int hi=Math.min(A[i][1],B[j][1]);
+            if(lo<=hi)
+                ans.add(new int[]{lo,hi});
+            if(A[i][1]<B[j][1]) i++;
+            else j++;
+        }
+        return ans.toArray(new int[ans.size()][2]);
+
     }
 }
