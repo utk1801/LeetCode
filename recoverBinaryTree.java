@@ -1,11 +1,9 @@
-import javax.swing.tree.TreeNode;
-import java.util.ArrayList;
+
 import java.util.List;
 
-public class recoverBinaryTree {
-    public static void main(String[] args) {
 
-    }
+//using Morris inorder traversal.
+public class recoverBinaryTree {
 
     //Definition for a binary tree node.
      public class TreeNode {
@@ -15,42 +13,70 @@ public class recoverBinaryTree {
          TreeNode(int x) { val = x; }
       }
 
-        static void recoverTree(TreeNode root) {
-            List<Integer> res=new ArrayList();
-            inorder(root,res);
-            int[] swapped=findSwap(res);
-            recover(root,swapped);
-        }
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    static TreeNode prevNode=null;
+    static TreeNode firstNode=null,lastNode=null;
 
-        static void inorder(TreeNode root,List<Integer> res){
-            if(root==null) return ;
-            inorder(root.left,res);
-            res.add(root.val);
-            inorder(root.right,res);
-        }
+    public void recoverTree(TreeNode root) {
+        if(root==null)
+            return;
+        TreeNode cur=root;
+        while(cur!=null){
+            //if left is null, print the node and move to current node's right.
+            if(cur.left==null){
+                if(prevNode!=null && prevNode.val>cur.val)
+                    find(cur);
+                prevNode=cur;
+                cur=cur.right;
+            }else{
+                TreeNode predecessor=cur.left;
+                //to find predecessor, keep moving to the right, till right node is not null or is not current.
+                while(predecessor.right!=cur && predecessor.right!=null){
+                    predecessor=predecessor.right;
+                }
 
-        static int[] findSwap(List<Integer> res){
-            int n=res.size();
-            int x=-1,y=-1;
-            for(int i=0;i<n-1;i++){
-                if(res.get(i)>res.get(i+1)){
-                    y=res.get(i+1);
-                    // first swap occurence
-                    if(x==-1) x=res.get(i);
-                    // second swap occurence
-                    else break;
+                //if right node is null, then go left after estabilishing link from pred to current.
+                if(predecessor.right==null){
+                    predecessor.right=cur;
+                    cur=cur.left;
+                }else{
+                    //left is already visited. Remove the link established earlier, and go right after visiting current node.
+                    if(prevNode!=null && prevNode.val>cur.val)
+                        find(cur);
+                    prevNode=cur;
+                    predecessor.right=null;
+                    cur=cur.right;
                 }
             }
-            return new int[]{x,y};
         }
+        if(firstNode != null && lastNode != null)
+            swap(firstNode, lastNode);
+    }
 
-        static void recover(TreeNode node, int[] swap) {
-            if (node != null) {
-                if (node.val == swap[0] || node.val == swap[1]) {
-                    node.val = node.val == swap[0] ? swap[1] : swap[0];
-                }
-                recover(node.left, swap);
-                recover(node.right, swap);
-            }
-        }
+    static void find(TreeNode root){
+        if(firstNode == null)
+            firstNode = prevNode;
+        lastNode = root;
+    }
+
+    static void swap(TreeNode firstNode, TreeNode lastNode){
+        int t = firstNode.val;
+        firstNode.val = lastNode.val;
+        lastNode.val = t;
+    }
 }
+
