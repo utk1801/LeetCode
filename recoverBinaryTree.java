@@ -31,6 +31,8 @@ public class recoverBinaryTree {
     static TreeNode prevNode=null;
     static TreeNode firstNode=null,lastNode=null;
 
+    //Morris inorder traversal in O(1) space. Saves space by maintaining predecessor pointer while traversing and comparing values
+    // for predecessor with current pointer, to find potential swap pair.
     public void recoverTree(TreeNode root) {
         if(root==null)
             return;
@@ -55,10 +57,12 @@ public class recoverBinaryTree {
                     cur=cur.left;
                 }else{
                     //left is already visited. Remove the link established earlier, and go right after visiting current node.
+                    predecessor.right=null;
+
                     if(prevNode!=null && prevNode.val>cur.val)
                         find(cur);
                     prevNode=cur;
-                    predecessor.right=null;
+
                     cur=cur.right;
                 }
             }

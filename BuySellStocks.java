@@ -7,6 +7,9 @@ public class BuySellStocks {
         System.out.println("Max profit with Atmost 2 txns: "+buySellAtmostTwo(prices2));
         System.out.println("Max profit with Atmost K txns: "+buySellAtmostK(prices, 3));
         System.out.println("Max profit with as many txns with 1 day cooldown: "+buySellCooldown(prices));
+        int[] prices3 = {1,3,2,8,4,9};
+        int fee=2;
+        System.out.println("Max profit with infinity txns bearing a txn fee is: "+maxProfitWithTxnFee(prices3,fee));
     }
 
     //find running minima and maxima along 1 pass.
@@ -108,6 +111,27 @@ public class BuySellStocks {
                 dp[i][1]=Math.max(dp[i-1][1],dp[i-2][0]-prices[i]);
             }
             return dp[n-1][0];
+        }
+
+        static int maxProfitWithTxnFee(int[] prices, int fee) {
+            int n=prices.length;
+            int[] b=new int[n]; //buy stock
+            int[] s=new int[n]; //sell stock
+            int[] na=new int[n]; //no action(holding a stock)
+            int[] r=new int[n]; //rest(don't own any stock)
+
+            b[0]=-prices[0]-fee;
+            s[0]=0;
+            na[0]=Integer.MIN_VALUE;
+            r[0]=Integer.MIN_VALUE;
+
+            for(int i=1;i<n;i++){
+                b[i]=Math.max(s[i-1],r[i-1]) -prices[i]-fee;
+                s[i]=Math.max(b[i-1],na[i-1]) +prices[i];
+                na[i]=Math.max(na[i-1],b[i-1]);
+                r[i]=Math.max(s[i-1],r[i-1]);
+            }
+            return Math.max(Math.max(Math.max(b[n-1],s[n-1]),r[n-1]),na[n-1]);
         }
     }
 
