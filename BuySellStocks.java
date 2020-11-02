@@ -117,11 +117,13 @@ public class BuySellStocks {
             int n=prices.length;
             int[] b=new int[n]; //buy stock
             int[] s=new int[n]; //sell stock
-            int[] na=new int[n]; //no action(holding a stock)
-            int[] r=new int[n]; //rest(don't own any stock)
+            int[] na=new int[n]; //no action (holding a stock)
+            int[] r=new int[n]; //rest (don't own any stock)
 
             b[0]=-prices[0]-fee;
             s[0]=0;
+
+            // infinity values are so chosen because sell and no-action cannot occur before buy.
             na[0]=Integer.MIN_VALUE;
             r[0]=Integer.MIN_VALUE;
 

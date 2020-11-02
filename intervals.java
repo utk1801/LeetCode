@@ -15,7 +15,11 @@ public class intervals {
         int[][] points={{10,16},{2,8},{1,6},{7,12}};
         System.out.println(findMinArrowShots(points));
         int[][] A={{0,2},{5,10},{13,23},{24,25}}, B = {{1,5},{8,12},{15,24},{25,26}};
-        System.out.print(Arrays.deepToString(intervalIntersection(A,B)));
+        System.out.println(Arrays.deepToString(intervalIntersection(A,B)));
+        int[][] slots1 = {{10,50},{60,120},{140,210}};
+        int[][] slots2 = {{0,15},{60,70}};
+        int duration=8;
+        System.out.println(minAvailableDuration(slots1,slots2,duration));
     }
 
     //LC-56
@@ -156,6 +160,29 @@ public class intervals {
             else j++;
         }
         return ans.toArray(new int[ans.size()][2]);
+    }
 
+    //LC- 1229 (Meeting Scheduler)
+    static List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
+        Arrays.sort(slots1,(a,b)->(a[0]-b[0]));
+        Arrays.sort(slots2,(a,b)->a[0]-b[0]);
+
+        int n1=slots1.length;
+        int n2=slots2.length;
+        int i=0,j=0;
+
+        while(i<n1 && j<n2){
+            int intStart=Math.max(slots1[i][0],slots2[j][0]);
+            int intEnd=Math.min(slots1[i][1],slots2[j][1]);
+            if(intStart+duration<=intEnd)
+                return Arrays.asList(intStart,intStart+duration);
+            else {
+                if(slots1[i][1]<slots2[j][1])
+                    i++;
+                else
+                    j++;
+            }
+        }
+        return new ArrayList();
     }
 }
