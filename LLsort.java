@@ -54,7 +54,6 @@ public class LLsort {
     ////
     //Insertion Sort on a Linked List.
     ////
-    ListNode ans=null;
     public ListNode insertionSortList(ListNode head) {
         if(head==null) return null;
         if(head.next==null) return head;
