@@ -44,7 +44,6 @@ public class AddTwoNumbers2 {
             ListNode head=new ListNode(carry);
             head.next=res;
             res=head;
-            sum/=10;
         }
 
         //remove leading zeroes
